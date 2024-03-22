@@ -1,15 +1,9 @@
+import { OrderingDomainModel } from "@ratatouille/modules/order/core/model/ordering-domain-model";
 import React from "react";
-
-type Guest = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  age: number;
-};
 
 export const useGuestsSection = () => {
   function addGuest() {
-    const newGuest: Guest = {
+    const newGuest: OrderingDomainModel.Guest = {
       id: Math.random().toString(),
       firstName: "",
       lastName: "",
@@ -33,7 +27,7 @@ export const useGuestsSection = () => {
     return false;
   }
 
-  const [guests, setGuests] = React.useState<Guest[]>([]);
+  const [guests, setGuests] = React.useState<OrderingDomainModel.Guest[]>([]);
 
   return {
     addGuest,
