@@ -13,11 +13,34 @@ class StubIDProvider implements IIDProvider {
 
 const idProvider = new StubIDProvider();
 
+const emptyInitialState: OrderingDomainModel.Guest[] = [];
+const stateWithOneGuest: OrderingDomainModel.Guest[] = [
+  {
+    id: "1",
+    firstName: "John",
+    lastName: "Doe",
+    age: 0
+  }
+];
+const stateWithTwoUsers: OrderingDomainModel.Guest[] = [
+  {
+    id: "1",
+    firstName: "John",
+    lastName: "Doe",
+    age: 0
+  },
+  {
+    id: "2",
+    firstName: "John",
+    lastName: "Doe",
+    age: 0
+  }
+];
+const form = new GuestForm(idProvider);
+
 describe('Add a guest', () => {
   it('should add a guest', () => {
-    const form = new GuestForm(idProvider);
-    const initialState: OrderingDomainModel.Guest[] = [];
-    const state = form.addGuest(initialState);
+    const state = form.addGuest(emptyInitialState);
     expect(state).toEqual([
       {
         id: "1",
@@ -29,16 +52,7 @@ describe('Add a guest', () => {
   });
 
   it("shoud add a guest when there's already one", () => {
-    const form = new GuestForm(idProvider);
-    const initialState: OrderingDomainModel.Guest[] = [
-      {
-        id: "1",
-        firstName: "John",
-        lastName: "Doe",
-        age: 0
-      }
-    ];
-    const state = form.addGuest(initialState);
+    const state = form.addGuest(stateWithOneGuest);
     expect(state).toEqual([
       {
         id: "1",
@@ -56,22 +70,7 @@ describe('Add a guest', () => {
   });
 
   it("should add a guest when there are multiple guests", () => {
-    const form = new GuestForm(idProvider);
-    const initialState: OrderingDomainModel.Guest[] = [
-      {
-        id: "1",
-        firstName: "John",
-        lastName: "Doe",
-        age: 0
-      },
-      {
-        id: "2",
-        firstName: "John",
-        lastName: "Doe",
-        age: 0
-      }
-    ];
-    const state = form.addGuest(initialState);
+    const state = form.addGuest(stateWithTwoUsers);
     expect(state).toEqual([
       {
         id: "1",
@@ -93,4 +92,29 @@ describe('Add a guest', () => {
       }
     ])
   });
+});
+
+describe('Remove a guest', () => {
+  it('When there is no user, the remove should do nothing', () => {
+    const state = form.removeGuest(emptyInitialState, "1");
+    expect(state).toEqual([]);
+  });
+
+  it('When there is a user with ID 1, the user with ID 1 should be removed', () => {
+    const state = form.removeGuest(stateWithOneGuest, "1");
+    expect(state).toEqual([]);
+  });
+
+  it('When there is two users, only the user with ID 1 should be removed', () => {
+    const state = form.removeGuest(stateWithTwoUsers, "1");
+    expect(state).toEqual([
+      {
+        id: "2",
+        firstName: "John",
+        lastName: "Doe",
+        age: 0
+      }
+    ]);
+  });
+
 });

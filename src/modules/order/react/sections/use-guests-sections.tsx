@@ -10,7 +10,8 @@ export const useGuestsSection = () => {
   }
 
   function removeGuest(id: string) {
-    setGuests(guests.filter(guest => guest.id !== id));
+    const newState = guestForm.current.removeGuest(guests, id);
+    setGuests(newState);
   }
 
   function updateGuest(id: string, key: string, value: any) {}
