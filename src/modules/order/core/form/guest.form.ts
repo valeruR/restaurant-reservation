@@ -20,6 +20,9 @@ export class GuestForm {
   removeGuest(state: OrderingDomainModel.Form, id: string) {
     return produce(state, draft => {
       draft.guests = draft.guests.filter(guest => guest.id !== id);
+      if (draft.organizedId === id) {
+        draft.organizedId = null;
+      }
     });
   }
 
@@ -30,7 +33,13 @@ export class GuestForm {
   }
 
   isSubmittable(state: OrderingDomainModel.Form) {
-    return state.organizedId !== null;
+    return state.organizedId !== null
+      && state.guests.every(
+        guest => 
+          guest.age >= 18
+          && guest.firstName.length > 0
+          && guest.lastName.length > 0
+        );
   }
 
   updateGuest<T extends keyof OrderingDomainModel.Guest>(
