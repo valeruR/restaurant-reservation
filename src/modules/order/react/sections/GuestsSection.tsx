@@ -3,6 +3,7 @@
 import { Box, Button, FormControl, FormControlLabel, FormLabel, Grid, TextField, Typography, Checkbox } from "@mui/material";
 import { useGuestsSection } from "@ratatouille/modules/order/react/sections/use-guests-sections";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { OrderingDomainModel } from "@ratatouille/modules/order/core/model/ordering-domain-model";
 
 export const GuestsSection = () => {
   const presenter = useGuestsSection();
@@ -12,7 +13,7 @@ export const GuestsSection = () => {
       <Typography variant="h5">Invités</Typography>
       <Grid sx={{ paddingTop: 2 }} rowSpacing={4}>
         {presenter.form.guests.map((guest, index) => (
-          <Box key={Math.random()}>
+          <Box key={guest.id}>
             <GuestRow
               firstName={guest.firstName}
               lastName={guest.lastName}
@@ -55,7 +56,11 @@ const GuestRow: React.FC<{
   lastName: string;
   age: number;
   isOrganizer: boolean;
-  onChange: (id: string, key: string, value: any) => void;
+  onChange: <T extends keyof OrderingDomainModel.Guest>(
+    id: string,
+    key: T,
+    value: OrderingDomainModel.Guest[T]
+  ) => void;
   remove: (id: string) => void;
   changeOrganizer: (id: string) => void;
 }> = ({
