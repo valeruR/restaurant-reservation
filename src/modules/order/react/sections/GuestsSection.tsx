@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, FormControl, FormLabel, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, FormControlLabel, FormLabel, Grid, TextField, Typography, Checkbox } from "@mui/material";
 import { useGuestsSection } from "@ratatouille/modules/order/react/sections/use-guests-sections";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -18,8 +18,10 @@ export const GuestsSection = () => {
               lastName={guest.lastName}
               id={guest.id}
               age={guest.age}
+              isOrganizer={guest.id === presenter.form.organizedId}
               onChange={presenter.updateGuest}
               remove={presenter.removeGuest}
+              changeOrganizer={presenter.changeOrganizer}
             />
           </Box>
           ))}
@@ -38,7 +40,7 @@ export const GuestsSection = () => {
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="contained" onClick={presenter.onNext} disabled={false}>
+          <Button variant="contained" onClick={presenter.onNext} disabled={presenter.isSubmittable === false}>
             Suivant
           </Button>
         </Grid>
@@ -52,15 +54,19 @@ const GuestRow: React.FC<{
   firstName: string;
   lastName: string;
   age: number;
+  isOrganizer: boolean;
   onChange: (id: string, key: string, value: any) => void;
   remove: (id: string) => void;
+  changeOrganizer: (id: string) => void;
 }> = ({
   id,
   firstName,
   lastName,
   age,
+  isOrganizer,
   onChange,
-  remove
+  remove,
+  changeOrganizer
 }) => {
   return (
     <Box>
@@ -82,6 +88,17 @@ const GuestRow: React.FC<{
             <FormLabel>Âge</FormLabel>
             <TextField value={age} onChange={(e) => onChange(id, 'age', parseInt(e.target.value, 10))} />
           </FormControl>
+        </Grid>
+        <Grid item>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isOrganizer}
+                onChange={() => changeOrganizer(id)}
+              />
+            }
+            label="Organisateur"
+          />
         </Grid>
         <Box sx={{ marginTop: 2 }}>
           <Button variant="contained" onClick={() => remove(id)} color="error" startIcon={<DeleteIcon />}>

@@ -128,3 +128,31 @@ describe('Remove a guest', () => {
   });
 
 });
+
+describe('Add an organizer', () => {
+  it('setOrganizer ID when the user does not exist', () => {
+    const state = form.changeOrganizer(emptyInitialState, "1");
+    expect(state.organizedId).toEqual(null);
+  });
+
+  it('When there is no user, the organizer should be null', () => {
+    const state = form.changeOrganizer(stateWithOneGuest, "1");
+    expect(state.organizedId).toEqual("1");
+  });
+});
+
+describe('Is submittable', () => {
+  it('When no guest is an organizer, it shoud not be submittable', () => {
+    const isSubmittable = form.isSubmittable(emptyInitialState);
+    expect(isSubmittable).toEqual(false);
+  });
+
+  it('When a guest is an organizer, it should be submittable', () => {
+    const withOrganizerState = {
+      ...stateWithOneGuest,
+      organizedId: "1"
+    }
+    const isSubmittable = form.isSubmittable(withOrganizerState);
+    expect(isSubmittable).toEqual(true);
+  });
+});

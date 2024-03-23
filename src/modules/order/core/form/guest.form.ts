@@ -25,4 +25,15 @@ export class GuestForm {
       guests: state.guests.filter(guest => guest.id !== id)
     }
   }
+
+  changeOrganizer(state: OrderingDomainModel.Form, id: string) {
+    return {
+      ...state,
+      organizedId: state.guests.some(guest => guest.id === id) ? id : null
+    }
+  }
+
+  isSubmittable(state: OrderingDomainModel.Form) {
+    return state.organizedId !== null;
+  }
 }
