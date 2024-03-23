@@ -4,18 +4,25 @@ import { OrderingDomainModel } from "@ratatouille/modules/order/core/model/order
 export class GuestForm {
   constructor(private idProvider: IIDProvider) {}
 
-  addGuest(guests: OrderingDomainModel.Guest[]) {
-    return [
-      ...guests,
-      {
-      id: this.idProvider.generate(),
-      firstName: "John",
-      lastName: "Doe",
-      age: 0
-    }];
+  addGuest(state: OrderingDomainModel.Form) {
+    return {
+      ...state,
+      guests: [
+        ...state.guests,
+        {
+          id: this.idProvider.generate(),
+          firstName: "John",
+          lastName: "Doe",
+          age: 0
+        }
+      ],
+    };
   }
 
-  removeGuest(guests: OrderingDomainModel.Guest[], id: string) {
-    return guests.filter(guest => guest.id !== id);
+  removeGuest(state: OrderingDomainModel.Form, id: string) {
+    return {
+      ...state,
+      guests: state.guests.filter(guest => guest.id !== id)
+    }
   }
 }

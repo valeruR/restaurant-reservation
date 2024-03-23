@@ -11,7 +11,7 @@ export const GuestsSection = () => {
     <Box sx={{ marginTop: 2 }}>
       <Typography variant="h5">Invités</Typography>
       <Grid sx={{ paddingTop: 2 }} rowSpacing={4}>
-        {presenter.guests.map((guest, index) => (
+        {presenter.form.guests.map((guest, index) => (
           <Box key={Math.random()}>
             <GuestRow
               firstName={guest.firstName}
