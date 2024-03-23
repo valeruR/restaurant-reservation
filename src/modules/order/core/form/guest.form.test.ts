@@ -175,4 +175,9 @@ describe('Update a guest', () => {
     const state = form.updateGuest(stateWithOneGuest, "1", key, value);
     expect(state.guests[0][key]).toEqual(value);
   });
+
+  it('should do nothing if the guest does not exist', () => {
+    const state = form.updateGuest(stateWithOneGuest, "2", "firstName", "Jane");
+    expect(state.guests).toEqual(stateWithOneGuest.guests);
+  });
 });
